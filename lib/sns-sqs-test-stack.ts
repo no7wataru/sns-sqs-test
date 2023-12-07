@@ -26,6 +26,7 @@ export class SnsSqsTestStack extends cdk.Stack {
           allowlist: [1],
         }),
       },
+      rawMessageDelivery: true,
     }));
 
     topic.addSubscription(new subscriptions.SqsSubscription(queueV2, {
@@ -34,6 +35,7 @@ export class SnsSqsTestStack extends cdk.Stack {
           allowlist: [2],
         }),
       },
+      rawMessageDelivery: true,
     }));
   }
 }
