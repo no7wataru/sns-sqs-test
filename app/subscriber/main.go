@@ -19,7 +19,7 @@ func main() {
 	queue1 := flag.String("q1", "", "The name of the first queue")
 	queue2 := flag.String("q2", "", "The name of the second queue")
 	timeout := flag.Int64("t", 5, "How long, in seconds, that the message is hidden from others")
-	interval := flag.Int64("i", 2, "How long, in seconds, to wait between dequeues")
+	interval := flag.Int64("i", 1, "How long, in seconds, to wait between dequeues")
 	flag.Parse()
 
 	if *queue1 == "" || *queue2 == "" {
@@ -63,8 +63,8 @@ func main() {
 
 	wg := sync.WaitGroup{}
 
-	fmt.Println(*urlResults[0].QueueUrl)
-	fmt.Println(*urlResults[1].QueueUrl)
+	// fmt.Println(*urlResults[0].QueueUrl)
+	// fmt.Println(*urlResults[1].QueueUrl)
 
 	wg.Add(1)
 	go dequeue(ctx, svc, urlResults[0].QueueUrl, timeout, &wg, interval)
@@ -111,7 +111,7 @@ func dequeue(ctx context.Context, svc *sqs.SQS, queueURL *string, timeout *int64
 			messageHandle := msgResult.Messages[0].ReceiptHandle
 			body := msgResult.Messages[0].Body
 
-			fmt.Println("Reseived message: " + *body)
+			fmt.Println(*queueURL + ": " + *body)
 
 			_, err = svc.DeleteMessage(&sqs.DeleteMessageInput{
 				QueueUrl:      queueURL,
